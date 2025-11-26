@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('testimonials', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table -> id();
+            $table -> foreignId('boarding_house_id') -> constrained();
+            $table -> string('photo');
+            $table -> string('content');
+            $table -> integer('rating');
+            $table -> timestamps();
         });
     }
 

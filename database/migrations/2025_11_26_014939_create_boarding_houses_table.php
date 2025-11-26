@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('boarding_houses', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table -> id();
+            $table -> string('name');
+            $table -> string('slug');
+            $table -> string('thumbnail');
+            $table -> foreignId('city_id') -> constrained();
+            $table -> foreignId('category_id') -> constrained();
+            $table -> text('description');
+            $table -> integer('price');
+            $table -> text('address');
+            $table -> timestamps();
         });
     }
 
