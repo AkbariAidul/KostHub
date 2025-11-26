@@ -16,8 +16,8 @@ return new class extends Migration
             $table -> string('name');
             $table -> string('slug');
             $table -> string('thumbnail');
-            $table -> foreignId('city_id') -> constrained();
-            $table -> foreignId('category_id') -> constrained();
+            $table -> foreignId('city_id') -> constrained() -> onDelete('cascade');
+            $table -> foreignId('category_id') -> constrained() -> onDelete('cascade');
             $table -> text('description');
             $table -> integer('price');
             $table -> text('address');

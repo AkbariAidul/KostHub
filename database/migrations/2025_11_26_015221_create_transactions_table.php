@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table -> id();
             $table -> string('code');
-            $table -> foreignId('boarding_house_id') -> constrained();
-            $table -> foreignId('room_id') -> constrained();
+            $table -> foreignId('boarding_house_id') -> constrained()-> onDelete('cascade');
+            $table -> foreignId('room_id') -> constrained()-> onDelete('cascade');
             $table -> string('name');
             $table -> string('email');
             $table -> string('phone_number');
