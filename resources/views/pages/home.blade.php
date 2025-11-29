@@ -164,5 +164,5 @@
             </div>
         </section>
 
-        @include('includes.navigation')
+    @include('includes.navigation')
 @endsection
