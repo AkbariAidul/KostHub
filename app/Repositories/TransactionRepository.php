@@ -59,6 +59,11 @@ class TransactionRepository implements TransactionRepositoryInterfaces
     {
         return 'KSTHB' . rand(10000, 99999);
     }
+    
+    public function getTransactionByCodeEmailPhone($code, $email, $phone)
+    {
+        return Transaction::where('code', $code)->where('email', $email)->where('phone_number', $phone)->first();
+    }
 
     public function calculateTotalAmount($pricePerMonth, $duration)
     {

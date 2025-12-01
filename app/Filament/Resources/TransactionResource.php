@@ -40,8 +40,7 @@ class TransactionResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('phone_number')
                     ->tel()
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\Select::make('payment_method')
                     ->options([
                         'down_payment' => 'Down Payment',
