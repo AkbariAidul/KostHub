@@ -9,4 +9,6 @@ Interface TransactionRepositoryInterfaces
     public function saveTransactionDataToSession($data);
 
     public function saveTransaction($data);
+    
+    public function getTransactionByCode($code);
 }
