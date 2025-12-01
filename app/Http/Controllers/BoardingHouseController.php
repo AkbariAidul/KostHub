@@ -6,6 +6,7 @@ use App\Interfaces\BoardingHouseRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\CityRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class BoardingHouseController extends Controller
 {
@@ -23,10 +24,25 @@ class BoardingHouseController extends Controller
         $this->boardingHouseRepository = $boardingHouseRepository;
     }
 
+    public function show($slug)
+    {
+        $boardingHouse = $this->boardingHouseRepository->getBoardingHouseBySlug($slug);
+
+        return view('pages.boarding-house.show', compact('boardingHouse'));
+    }
+
     public function find()
     {
         $cities = $this->cityRepository->getAllCities();
         $categories = $this->categoryRepository->getAllCategories();
+
         return view ('pages.boarding-house.find', compact('cities', 'categories'));
+    }
+
+    public function findResults(Request $request)
+    {
+        $boardingHouses = $this->boardingHouseRepository->getAllBoardingHouses($request->search, $request->city, $request->category);
+
+        return view('pages.boarding-house.index', compact('boardingHouses'));
     }
 }
