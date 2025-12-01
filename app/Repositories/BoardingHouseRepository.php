@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\BoardingHouseRepositoryInterface;
 use App\Models\BoardingHouse;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Builder;
 
 class BoardingHouseRepository implements BoardingHouseRepositoryInterface
@@ -61,5 +62,10 @@ class BoardingHouseRepository implements BoardingHouseRepositoryInterface
      public function getBoardingHouses($search = null, $city = null, $category = null)
     {
         return $this->getAllBoardingHouses($search, $city, $category);
+    }
+
+    public function getBoardingHouseRoomById($id)
+    {
+        return Room::find($id);
     }
 }
