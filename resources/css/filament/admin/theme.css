@@ -1,0 +1,53 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@config '../../../../tailwind.config.js';
+
+/* --- FONT KHUSUS --- */
+/* Memaksa browser me-render font lebih tebal dan smooth */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- SIDEBAR JUICY --- */
+
+/* 1. Memberi jarak item sidebar agar tidak nempel pinggir */
+.fi-sidebar-item {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-bottom: 4px;
+}
+
+/* 2. Menu yang SEDANG AKTIF (Dipilih) */
+.fi-sidebar-item-active > a {
+    background-color: rgba(79, 168, 192, 0.15) !important; /* Background tosca transparan */
+    color: #4FA8C0 !important; /* Teks tosca */
+    font-weight: 600 !important;
+    border-radius: 9999px !important; /* Bikin LONJONG (Pill Shape) */
+    box-shadow: none !important;
+}
+
+/* 3. Menu saat DI-HOVER (Mouse lewat) */
+.fi-sidebar-item:not(.fi-sidebar-item-active) > a:hover {
+    background-color: #f8fafc !important; /* Abu sangat muda */
+    color: #0f172a !important; /* Hitam */
+    border-radius: 9999px !important; /* Lonjong juga */
+}
+
+/* --- CARD & DASHBOARD --- */
+
+/* Membuat semua Card (Widget/Form) melayang dengan shadow halus */
+.fi-section, .fi-widget {
+    border-radius: 20px !important; /* Sudut sangat bulat */
+    border: 1px solid #f1f5f9 !important; /* Border abu super tipis */
+    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05) !important; /* Shadow "mahal" */
+}
+
+/* Input Form jadi bulat */
+input, select, textarea, .fi-input {
+    border-radius: 12px !important;
+}
+
+/* Tombol jadi bulat penuh */
+.fi-btn {
+    border-radius: 9999px !important; /* Tombol Pill */
+}

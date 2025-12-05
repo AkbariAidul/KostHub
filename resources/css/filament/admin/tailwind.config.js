@@ -7,7 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/css/filament/admin/theme.css', // <--- TAMBAHKAN BARIS INI
+                'resources/css/filament/admin/theme.css', // <--- WAJIB ADA INI
             ],
             refresh: true,
         }),
