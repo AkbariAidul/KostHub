@@ -23,6 +23,8 @@ class PromoCodeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
+    protected static ?string $navigationGroup = 'Marketing';
+
     public static function form(Form $form): Form
 {
     return $form
