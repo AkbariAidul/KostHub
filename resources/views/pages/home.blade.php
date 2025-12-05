@@ -5,6 +5,16 @@
             class="absolute top-0 w-full h-[280px] rounded-bl-[75px] bg-[linear-gradient(180deg,#F2F9E6_0%,#D2EDE4_100%)]">
     </div>
 
+        <div class="swiper-container">
+        <div class="swiper-wrapper">
+            @foreach($promoCodes as $promo)
+                <div class="swiper-slide">
+                    <img src="{{ Storage::url($promo->image) }}" alt="{{ $promo->code }}" class="w-full rounded-xl">
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
             <div class="flex flex-col gap-1">
                 <p>Good day,</p>
@@ -16,7 +26,7 @@
             </a>
     </div>
 
-    <div id="Categories" class="swiper w-full overflow-x-hidden mt-[30px]">
+        <div id="Categories" class="swiper w-full overflow-x-hidden mt-[30px]">
             <div class="swiper-wrapper">
                 
                 @foreach ($categories as $category)

@@ -8,6 +8,7 @@ use App\Interfaces\BoardingHouseRepositoryInterface;
 use App\Interfaces\TransactionRepositoryInterfaces;
 use App\Repositories\TransactionRepository;
 use Illuminate\Http\Request;
+use App\Services\TwilioService; // Pastikan ini ter-import
 
 class BookingController extends Controller
 {
@@ -19,12 +20,12 @@ class BookingController extends Controller
         TransactionRepositoryInterfaces $transactionRepository
     ) {
         $this->boardingHouseRepository = $boardingHouseRepository;
-        $this->transactionRepository= $transactionRepository;
+        $this->transactionRepository = $transactionRepository;
     }
 
     public function booking(Request $request, $slug)
     {
-        $this->transactionRepository->saveTransactionDataToSession($request->all()); 
+        $this->transactionRepository->saveTransactionDataToSession($request->all());
 
         return redirect()->route('booking.information', $slug);
     }
@@ -56,13 +57,43 @@ class BookingController extends Controller
         return view('pages.booking.checkout', compact('transaction', 'boardingHouse', 'room'));
     }
 
-    public function payment (Request$request)
+    public function payment(Request $request)
     {
+        // 1. Simpan data ke session & Database
         $this->transactionRepository->saveTransactionDataToSession($request->all());
-
         $transaction = $this->transactionRepository->saveTransaction($this->transactionRepository->getTransactionDataFromSession());
 
-                // Set your Merchant Server Key
+        // ==========================================================
+        // INTEGRASI TWILIO (Kirim Notifikasi WA)
+        // ==========================================================
+        try {
+            // Inisialisasi Service
+            $twilio = new TwilioService();
+            
+            // Siapkan Pesan
+            $message  = "Halo {$transaction->name}, Terima kasih telah booking di KostHub! 👋\n\n";
+            $message .= "Kode Booking: *{$transaction->code}*\n"; // Bold di WA pakai bintang
+            $message .= "Total: Rp " . number_format($transaction->total_amount, 0, ',', '.') . "\n";
+            $message .= "Silahkan selesaikan pembayaran Anda.";
+
+            // Cek nama kolom di DB (phone atau phone_number)
+            // Menggunakan null coalescing operator untuk jaga-jaga
+            $phoneTarget = $transaction->phone_number ?? $transaction->phone;
+
+            if ($phoneTarget) {
+                $twilio->sendMessage($phoneTarget, $message);
+            }
+
+        } catch (\Exception $e) {
+            // Kita pakai try-catch agar jika Twilio error (misal kuota habis/internet down),
+            // proses pembayaran Midtrans TETAP BERJALAN dan tidak error di user.
+            \Illuminate\Support\Facades\Log::error("Gagal kirim WA Twilio: " . $e->getMessage());
+        }
+        // ==========================================================
+
+
+        // 2. Setup Midtrans
+        // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
@@ -76,10 +107,11 @@ class BookingController extends Controller
                 'order_id' => $transaction->code,
                 'gross_amount' => $transaction->total_amount,
             ],
-            'customer_details' =>[
+            'customer_details' => [
                 'first_name' => $transaction->name,
                 'email' => $transaction->email,
-                'phone' => $transaction->phone,
+                // Pastikan menggunakan properti yang benar sesuai database
+                'phone_number' => $transaction->phone_number ?? $transaction->phone,
             ],
         ];
 
@@ -92,8 +124,7 @@ class BookingController extends Controller
     {
         $transaction = $this->transactionRepository->getTransactionByCode($request->order_id);
 
-        if(!$transaction)
-        {
+        if (!$transaction) {
             return redirect()->route('home');
         }
 
@@ -107,10 +138,15 @@ class BookingController extends Controller
 
     public function show(BookingShowRequest $request)
     {
-        $transaction = $this->transactionRepository->getTransactionByCodeEmailPhone($request->code, $request->email, $request->phone_number,);
+        // Pastikan parameter di sini sesuai dengan nama kolom di database kamu
+        // Saya melihat error sebelumnya ada isu di sini, jadi pastikan repository menerima parameter yang pas
+        $transaction = $this->transactionRepository->getTransactionByCodeEmailPhone(
+            $request->code, 
+            $request->email, 
+            $request->phone_number // Sesuaikan dengan input name di form HTML (phone atau phone_number)
+        );
 
-        if (!$transaction)
-        {
+        if (!$transaction) {
             return redirect()->back()->with('error', 'Data Transaksi Tidak Ditemukan');
         }
 
