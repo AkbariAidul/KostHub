@@ -166,4 +166,16 @@ public static function table(Table $table): Table
             'edit' => Pages\EditPromoCode::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+{
+    // Menghitung hanya yang is_active = true
+    return static::getModel()::where('is_active', true)->count();
+}
+
+// Opsional: Ubah warna badge jadi hijau biar fresh
+public static function getNavigationBadgeColor(): ?string
+{
+    return 'success';
+}
 }
