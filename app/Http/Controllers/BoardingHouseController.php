@@ -62,9 +62,9 @@ class BoardingHouseController extends Controller
     /**
      * API untuk mengambil data kos yang tersimpan di localStorage
      */
-    public function getSavedKos(Request $request)
+    public function getSavedKos(\Illuminate\Http\Request $request)
     {
-        // Slug dikirim sebagai string dipisah koma, misal: "kos-a,kos-b"
+        // Menerima string slug dipisah koma, contoh: "kos-a,kos-b"
         $slugs = $request->input('slugs');
         
         if (empty($slugs)) {
@@ -73,14 +73,15 @@ class BoardingHouseController extends Controller
 
         $slugArray = explode(',', $slugs);
         
-        // Ambil data kos berdasarkan slug
-        $houses = BoardingHouse::whereIn('slug', $slugArray)->get();
+        // Ambil data kos dari database
+        $houses = \App\Models\BoardingHouse::whereIn('slug', $slugArray)->get();
         
         if ($houses->isEmpty()) {
             return response()->json(['html' => '']);
         }
 
-        // Render partial view
+        // Render tampilan kartu kos menggunakan partials yang sudah ada
+        // Pastikan Anda sudah membuat file resources/views/partials/kos_list.blade.php
         $html = view('partials.kos_list', ['houses' => $houses])->render();
 
         return response()->json(['html' => $html]);

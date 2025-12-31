@@ -8,9 +8,12 @@
             <a href="{{ url()->previous() }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md hover:bg-white transition-all text-white hover:text-slate-800 border border-white/20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
             </a>
-            <button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md hover:bg-white transition-all text-white hover:text-red-500 border border-white/20">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
-            </button>
+            <div class="flex gap-3">
+                
+                <button onclick="toggleSave('{{ $boardingHouse->slug }}', this)" class="save-btn w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md hover:bg-white transition-all text-white hover:text-red-500 border border-white/20 group" data-slug="{{ $boardingHouse->slug }}">
+                    <svg class="w-5 h-5 heart-icon transition-transform group-active:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                </button>
+            </div>
         </div>
 
         <div class="swiper-gallery w-full h-full">
@@ -23,6 +26,7 @@
                     @endforeach
                 @endforeach
             </div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 
@@ -117,12 +121,10 @@
     </main>
 
     <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-6 z-50">
-        <div class="bg-[#0F172A] rounded-full p-1.5 pl-6 pr-1.5 flex items-center justify-between shadow-2xl shadow-slate-900/30 border border-slate-800">
+        <div class="bg-[#1E293B] rounded-full p-1.5 pl-6 flex items-center justify-between shadow-2xl shadow-slate-900/30 border border-slate-800">
             <div class="flex flex-col justify-center">
-                <p class="text-slate-400 text-[10px] font-medium uppercase tracking-wide">Mulai dari</p>
-                <p class="text-white font-bold text-base">
-                    Rp {{ number_format($boardingHouse->price / 1000, 0) }}rb<span class="text-slate-500 font-normal text-xs">/bln</span>
-                </p>
+                <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Mulai dari</span>
+                <span class="font-bold text-white text-lg">Rp {{ number_format($boardingHouse->price, 0, ',', '.') }}<span class="text-slate-500 font-normal text-xs ml-1">/bln</span></span>
             </div>
             <a href="{{ route('kos.rooms', $boardingHouse->slug) }}" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-full font-bold text-sm transition-all shadow-lg shadow-primary/20 active:scale-95 flex items-center gap-2">
                 Pilih Kamar
@@ -134,6 +136,22 @@
 
 @section('scripts')
     <script>
+        // Init Swiper for Image Gallery
+        if (document.querySelector('.swiper-gallery')) {
+            new Swiper('.swiper-gallery', {
+                slidesPerView: 1,
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+            });
+        }
+
         const tabLinks = document.querySelectorAll('.tab-link');
         tabLinks.forEach(button => {
             button.addEventListener('click', () => {

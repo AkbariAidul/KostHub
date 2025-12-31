@@ -194,4 +194,4 @@ class BoardingHouseSeeder extends Seeder
             }
         }
     }
-}s
+}
