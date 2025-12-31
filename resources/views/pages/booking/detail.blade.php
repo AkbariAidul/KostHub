@@ -1,260 +1,81 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="Background" class="absolute top-0 w-full h-[230px] rounded-b-[75px] bg-[linear-gradient(180deg,#F2F9E6_0%,#D2EDE4_100%)]"></div>
-        <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
-            <a href="check-booking.html" class="w-12 h-12 flex items-center justify-center shrink-0 rounded-full overflow-hidden bg-white">
-                <img src="assets/images/icons/arrow-left.svg" class="w-[28px] h-[28px]" alt="icon">
+    <div class="min-h-screen bg-[#F8FAFC] pb-10">
+        <div class="px-6 pt-10 pb-6 flex items-center gap-4 bg-white shadow-sm sticky top-0 z-30">
+            <a href="{{ route('check-booking') }}" class="w-10 h-10 border border-slate-100 rounded-full flex items-center justify-center text-slate-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
             </a>
-            <p class="font-semibold">My Booking Details</p>
-            <div class="dummy-btn w-12"></div>
+            <h1 class="font-bold text-lg text-slate-800">Detail Booking</h1>
         </div>
-         <div id="Header" class="relative flex items-center justify-between gap-2 px-5 mt-[18px]">
-            <div class="flex flex-col w-full rounded-[30px] border border-[#F1F2F6] p-4 gap-4 bg-white">
-                <div class="flex gap-4">
-                    <div class="flex w-[120px] h-[132px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                        <img src="{{ asset('storage/' . $transaction->boardingHouse->thumbnail) }}" class="w-full h-full object-cover" alt="icon">
-                    </div>
-                    <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">
-                            {{ $transaction->boardingHouse->name }}
-                        </p>
-                        <hr class="border-[#F1F2F6]">
-                        <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">
-                                Kota {{ $transaction->boardingHouse->city->name }}
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">
-                                In {{ $transaction->boardingHouse->category->name }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <hr class="border-[#F1F2F6]">
-                <div class="flex gap-4">
-                    <div class="flex w-[120px] h-[156px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                        <img src="{{ asset('storage/' . $transaction->room->images->first()->image) }}" class="w-full h-full object-cover" alt="icon">
-                    </div>
-                    <div class="flex flex-col gap-3 w-full">
-                        <p class="font-semibold text-lg leading-[27px]">{{ $transaction->room->name }}</p>
-                        <hr class="border-[#F1F2F6]">
-                        <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">{{ $transaction->room->capacity}} People</p>
-                        </div>
-                        <div class="flex items-center gap-[6px]">
-                            <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                            <p class="text-sm text-ngekos-grey">{{ $transaction->room->square_feet}}sqft flat</p>
-                        </div>
-                        <hr class="border-[#F1F2F6]">
-                        <p class="font-semibold text-lg text-ngekos-orange">Rp {{ number_format($transaction->room->price_per_month, 0, ',', '.' ) }}<span
-                                class="text-sm text-ngekos-grey font-normal">/bulan</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-            <label class="relative flex items-center justify-between">
-                <p class="font-semibold text-lg">Customer</p>
-                <img src="assets/images/icons/arrow-up.svg" class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300" alt="icon">
-                <input type="checkbox" class="absolute hidden">
-            </label>
-            <div class="flex flex-col gap-4 pt-[22px]">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/profile-2user.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Name</p>
-                    </div>
-                    <p class="font-semibold">{{ $transaction->name }}</p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/sms.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Email</p>
-                    </div>
-                    <p class="font-semibold">{{ $transaction->email }}</p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/call.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Phone</p>
-                    </div>
-                    <p class="font-semibold">{{ $transaction->phone_number }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-            <label class="relative flex items-center justify-between">
-                <p class="font-semibold text-lg">Booking</p>
-                <img src="assets/images/icons/arrow-up.svg" class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300" alt="icon">
-                <input type="checkbox" class="absolute hidden">
-            </label>
-            <div class="flex flex-col gap-4 pt-[22px]">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/calendar.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Booking ID</p>
-                    </div>
-                    <p class="font-semibold">{{ $transaction->code }}</p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/clock.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Duration</p>
-                    </div>
-                    <p class="font-semibold">{{ $transaction->duration }} Months</p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/calendar.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Started At</p>
-                    </div>
-                    <p class="font-semibold">
-                        {{ \Carbon\Carbon::parse($transaction->start_date)->isoFormat('D MMM YYYY') }}
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/calendar.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Ended At</p>
-                    </div>
-                    <p class="font-semibold">
-                        {{ \Carbon\Carbon::parse($transaction['start_date'])->addMonths(intval($transaction->duration))->isoFormat('D MMM YYYY') }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="accordion group flex flex-col rounded-[30px] p-5 bg-[#F5F6F8] mx-5 mt-5 overflow-hidden has-[:checked]:!h-[68px] transition-all duration-300">
-            <label class="relative flex items-center justify-between">
-                <p class="font-semibold text-lg">Payment</p>
-                <img src="assets/images/icons/arrow-up.svg" class="w-[28px] h-[28px] flex shrink-0 group-has-[:checked]:rotate-180 transition-all duration-300" alt="icon">
-                <input type="checkbox" class="absolute hidden">
-            </label>
 
-                @php
-                        $subtotal = $transaction->room->price_per_month * $transaction->duration;
-                        $tax = $subtotal * 0.11;
-                        $insurance = $subtotal * 0.01;
-                        $total = $subtotal * $tax + $insurance;
-                        $downpayment = $total * 0.3;
-                    @endphp
-
-            <div class="flex flex-col gap-4 pt-[22px]">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/card-tick.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Payment</p>
+        <div class="px-6 mt-6">
+            <div class="bg-white rounded-[24px] p-6 shadow-sm border border-slate-100 mb-6 text-center">
+                @if($transaction->payment_status == 'success' || $transaction->payment_status == 'paid')
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
                     </div>
-                    @if ($transaction->payment_method === 'full_payment')
-                        <p class="font-semibold">Full Payment 100%</p>
-                    @else
-                        <p class="font-semibold">Down Payment 30%</p>
-                    @endif
-                    
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/receipt-2.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Kos Price</p>
+                    <h2 class="font-bold text-xl text-slate-800">Booking Berhasil!</h2>
+                    <p class="text-sm text-slate-400 mt-1">Pembayaran telah dikonfirmasi.</p>
+                @elseif($transaction->payment_status == 'pending')
+                    <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     </div>
-                    <p class="font-semibold">
-                        {{ number_format($transaction->room->price_per_month, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/receipt-2.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Sub Total</p>
-                    </div>
-                    <p class="font-semibold">
-                        {{ number_format($subtotal, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/receipt-disscount.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">PPN 11%</p>
-                    </div>
-                    <p class="font-semibold">
-                        {{ number_format($tax, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/security-user.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Insurance</p>
-                    </div>
-                    <p class="font-semibold">
-                        {{ number_format($insurance, 0, ',', '.') }}
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/receipt-text.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Grand total</p>
-                    </div>
-
-                        @if ($transaction->payment_method === 'full_payment')
-                            <p class="font-semibold">
-                                    {{ number_format($total, 0, ',', '.') }}
-                            </p>
-                        @else
-                            <p class="font-semibold">
-                                    {{ number_format($downpayment, 0, ',', '.') }}
-                            </p>
-                        @endif        
-                </div>
-                @if ($transaction->payment_status === 'pending')
-                         <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/security-card.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Status</p>
-                    </div>
-                    <p class="rounded-full p-[6px_12px] bg-ngekos-orange font-bold text-xs leading-[18px]">PENDING</p>
-                </div>
-                    
+                    <h2 class="font-bold text-xl text-slate-800">Menunggu Pembayaran</h2>
+                    <p class="text-sm text-slate-400 mt-1">Segera selesaikan pembayaranmu.</p>
                 @else
-                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="assets/images/icons/security-card.svg" class="w-6 h-6 flex shrink-0" alt="icon">
-                        <p class="text-ngekos-grey">Status</p>
+                    <div class="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
                     </div>
-                    <p class="rounded-full p-[6px_12px] bg-[#91BF77] font-bold text-xs leading-[18px]">SUCCESSFUL</p>
-                </div>
+                    <h2 class="font-bold text-xl text-slate-800">Booking Gagal/Batal</h2>
                 @endif
+                
+                <div class="mt-4 inline-block bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
+                    <span class="text-xs font-bold text-slate-500">ID: {{ $transaction->code }}</span>
+                </div>
             </div>
-        </div>
-        <div id="BottomButton" class="relative flex w-full h-[98px] shrink-0">
-            <div class="fixed bottom-[30px] w-full max-w-[640px] px-5 z-10">
-                <a href="#" class="flex w-full justify-center rounded-full p-[14px_20px] bg-ngekos-orange font-bold text-white">Contact Customer Service</a>
+
+            <div class="bg-white rounded-[24px] overflow-hidden shadow-sm border border-slate-100 mb-6">
+                <div class="p-4 bg-slate-50 flex items-center gap-4 border-b border-slate-100">
+                    <div class="w-16 h-16 rounded-xl bg-white overflow-hidden shrink-0 border border-slate-200">
+                        <img src="{{ asset('storage/' . $transaction->boardingHouse->thumbnail) }}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">{{ $transaction->boardingHouse->name }}</h3>
+                        <p class="text-xs text-slate-500 mt-1">{{ $transaction->room->name }}</p>
+                    </div>
+                </div>
+
+                <div class="p-5 flex flex-col gap-4">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Nama Pemesan</span>
+                        <span class="font-bold text-slate-700">{{ $transaction->name }}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Durasi</span>
+                        <span class="font-bold text-slate-700">{{ $transaction->duration }} Bulan</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Check-in</span>
+                        <span class="font-bold text-slate-700">{{ \Carbon\Carbon::parse($transaction->start_date)->format('d M Y') }}</span>
+                    </div>
+                    
+                    <div class="h-px bg-slate-100 border-dashed border-t border-slate-200 my-1"></div>
+
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Total Bayar</span>
+                        <span class="font-bold text-[#4FA8C0] text-lg">Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</span>
+                    </div>
+                </div>
             </div>
+
+            <a href="https://wa.me/6281234567890" target="_blank" class="flex w-full justify-center rounded-full py-4 bg-[#1E293B] font-bold text-white shadow-lg hover:shadow-xl transition-all">
+                Hubungi Admin / Bantuan
+            </a>
+            
+            <a href="{{ route('home') }}" class="block text-center mt-4 text-sm font-bold text-slate-400 hover:text-slate-600">
+                Kembali ke Beranda
+            </a>
         </div>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('assets/js/accodion.js') }}"></script>
-    <script>
-        // Get all tab buttons
-        const tabLinks = document.querySelectorAll('.tab-link');
-
-        // Add click event listener to each button
-        tabLinks.forEach(button => {
-            button.addEventListener('click', () => {
-                // Get the target tab id from the data attribute
-                const targetTab = button.getAttribute('data-target-tab');
-                console.log(targetTab)
-                // Hide all tab contents
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.add('hidden');
-                });
-
-                // Show the target tab content
-                document.querySelector(targetTab).classList.toggle('hidden');
-            });
-        });
-    </script>
+    </div>
 @endsection

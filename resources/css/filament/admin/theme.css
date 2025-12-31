@@ -1,53 +1,80 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 @config '../../../../tailwind.config.js';
 
-/* --- FONT KHUSUS --- */
-/* Memaksa browser me-render font lebih tebal dan smooth */
+/* --- 1. GLOBAL SMOOTHING --- */
+/* Membuat font lebih tajam di semua mode */
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- SIDEBAR JUICY --- */
+/* --- 2. SIDEBAR ANIMATION (Perbagus Collapse) --- */
+/* Memberikan efek transisi halus saat lebar sidebar berubah */
+.fi-sidebar, 
+.fi-sidebar header, 
+.fi-sidebar nav {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
 
-/* 1. Memberi jarak item sidebar agar tidak nempel pinggir */
+/* Agar item menu tidak kaget saat sidebar mengecil */
+.fi-sidebar-item > a {
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* --- 3. SIDEBAR ITEM STYLING (BWA STYLE) --- */
+
+/* Jarak item agar tidak mepet */
 .fi-sidebar-item {
     padding-left: 12px;
     padding-right: 12px;
     margin-bottom: 4px;
 }
 
-/* 2. Menu yang SEDANG AKTIF (Dipilih) */
+/* --- STATE: ACTIVE (Menu yang sedang dipilih) --- */
 .fi-sidebar-item-active > a {
-    background-color: rgba(79, 168, 192, 0.15) !important; /* Background tosca transparan */
-    color: #4FA8C0 !important; /* Teks tosca */
-    font-weight: 600 !important;
-    border-radius: 9999px !important; /* Bikin LONJONG (Pill Shape) */
-    box-shadow: none !important;
+    border-radius: 50px !important;
+    background-color: rgba(79, 168, 192, 0.15) !important; /* Tosca Transparan */
+    color: #4FA8C0 !important; /* Teks Tosca */
+    font-weight: 700 !important;
 }
 
-/* 3. Menu saat DI-HOVER (Mouse lewat) */
-.fi-sidebar-item:not(.fi-sidebar-item-active) > a:hover {
-    background-color: #f8fafc !important; /* Abu sangat muda */
+/* --- STATE: HOVER (Mouse Lewat) --- */
+
+/* A. HOVER DI LIGHT MODE (Putih/Terang) */
+:not(.dark) .fi-sidebar-item:not(.fi-sidebar-item-active) > a:hover {
+    background-color: #f1f5f9 !important; /* Abu sangat muda */
     color: #0f172a !important; /* Hitam */
-    border-radius: 9999px !important; /* Lonjong juga */
+    border-radius: 50px !important;
+    transform: translateX(5px); /* Efek geser sedikit ke kanan biar interaktif */
 }
 
-/* --- CARD & DASHBOARD --- */
+/* B. HOVER DI DARK MODE (Gelap) - PERBAIKAN UTAMA DISINI */
+.dark .fi-sidebar-item:not(.fi-sidebar-item-active) > a:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important; /* Putih transparan (Glassmorphism) */
+    color: #ffffff !important; /* Teks Putih */
+    border-radius: 50px !important;
+    transform: translateX(5px); /* Efek geser sedikit */
+}
 
-/* Membuat semua Card (Widget/Form) melayang dengan shadow halus */
+/* --- 4. CARD & WIDGET STYLING --- */
 .fi-section, .fi-widget {
-    border-radius: 20px !important; /* Sudut sangat bulat */
-    border: 1px solid #f1f5f9 !important; /* Border abu super tipis */
-    box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05) !important; /* Shadow "mahal" */
+    border-radius: 20px !important;
+    border: none !important;
+    /* Shadow halus di Light Mode */
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05) !important;
 }
 
-/* Input Form jadi bulat */
+/* Shadow di Dark Mode agar card tetap terlihat timbul */
+.dark .fi-section, .dark .fi-widget {
+    background-color: #1e293b !important; /* Slate 800 */
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+}
+
+/* --- 5. ROUNDED INPUTS --- */
 input, select, textarea, .fi-input {
     border-radius: 12px !important;
 }
-
-/* Tombol jadi bulat penuh */
 .fi-btn {
     border-radius: 9999px !important; /* Tombol Pill */
 }

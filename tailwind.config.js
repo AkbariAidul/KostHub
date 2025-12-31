@@ -5,20 +5,23 @@ export default {
     content: [
         './app/Filament/**/*.php',
         './resources/views/filament/**/*.blade.php',
+        './resources/views/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],
     theme: {
         extend: {
-            // --- INI RAHASIANYA ---
-            // Kita override border radius bawaan Filament agar lebih "bulat" ala BWA
-            borderRadius: {
-                'none': '0',
-                'sm': '0.375rem',  // 6px
-                DEFAULT: '0.75rem', // 12px (Standar baru kita)
-                'md': '0.75rem',    // 12px
-                'lg': '1.0rem',     // 16px (Untuk Card)
-                'xl': '1.5rem',     // 24px (Untuk Modal/Dialog)
-                '2xl': '2rem',      // 32px
+            colors: {
+                'kots': {
+                    'primary': '#1B7B9E',
+                    'secondary': '#2BA3C8',
+                    'accent': '#4DBFE8',
+                    'light': '#E8F5F9',
+                    'dark': '#0D3B52',
+                },
+                'ngekos': {
+                    'grey': '#8B8B8B',
+                    'orange': '#FF9500',
+                }
             },
         },
     },

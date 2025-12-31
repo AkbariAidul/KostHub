@@ -1,29 +1,40 @@
-<div id="BottomNav" class="fixed bottom-6 w-full max-w-[640px] px-5 z-50">
-    <nav class="bg-[#0F172A] rounded-[30px] p-[14px_24px] shadow-[0_10px_30px_0_rgba(15,23,42,0.25)]">
-        <div class="flex justify-between items-center">
-            <a href="{{ route('home') }}" class="flex flex-col items-center text-center gap-1 group">
-                <!-- Icon Home -->
-                <svg class="w-6 h-6 {{ request()->routeIs('home') ? 'text-[#4FA8C0]' : 'text-slate-500 group-hover:text-white' }} transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                <span class="text-[10px] font-semibold {{ request()->routeIs('home') ? 'text-white' : 'text-slate-500 group-hover:text-white' }}">Discover</span>
-            </a>
-            
-            <a href="{{ route('check-booking') }}" class="flex flex-col items-center text-center gap-1 group">
-                <!-- Icon Orders -->
-                <svg class="w-6 h-6 {{ request()->routeIs('check-booking') ? 'text-[#4FA8C0]' : 'text-slate-500 group-hover:text-white' }} transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span class="text-[10px] font-semibold {{ request()->routeIs('check-booking') ? 'text-white' : 'text-slate-500 group-hover:text-white' }}">Orders</span>
-            </a>
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-6 z-50">
+    <nav class="bg-white/90 backdrop-blur-lg border border-white/40 rounded-full px-2 py-3 shadow-nav flex justify-between items-center relative">
+        
+        <a href="{{ route('home') }}" class="flex flex-col items-center gap-1 group w-14 transition-all {{ request()->routeIs('home') ? '' : 'opacity-50 hover:opacity-100' }}">
+            <svg class="w-6 h-6 {{ request()->routeIs('home') ? 'text-primary fill-primary/20' : 'text-slate-600' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/> 
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span class="text-[9px] font-bold {{ request()->routeIs('home') ? 'text-primary' : 'text-slate-500' }}">Home</span>
+        </a>
 
-            <a href="{{ route('find-kos') }}" class="flex flex-col items-ce nter text-center gap-1 group">
-                <!-- Icon Find -->
-                <svg class="w-6 h-6 {{ request()->routeIs('find-kos') ? 'text-[#4FA8C0]' : 'text-slate-500 group-hover:text-white' }} transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <span class="text-[10px] font-semibold {{ request()->routeIs('find-kos') ? 'text-white' : 'text-slate-500 group-hover:text-white' }}">Find</span>
-            </a>
+        <a href="{{ route('check-booking') }}" class="flex flex-col items-center gap-1 group w-14 transition-all {{ request()->routeIs('check-booking') ? '' : 'opacity-50 hover:opacity-100' }}">
+            <svg class="w-6 h-6 {{ request()->routeIs('check-booking') ? 'text-primary fill-primary/20' : 'text-slate-600' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <span class="text-[9px] font-bold {{ request()->routeIs('check-booking') ? 'text-primary' : 'text-slate-500' }}">Pesanan</span>
+        </a>
 
-            <a href="#" class="flex flex-col items-center text-center gap-1 group">
-                <!-- Icon Help -->
-                <svg class="w-6 h-6 text-slate-500 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                <span class="text-[10px] font-semibold text-slate-500 group-hover:text-white">Help</span>
+        <div class="relative w-14 flex justify-center">
+            <a href="{{ route('find-kos') }}" class="absolute -top-10 w-14 h-14 bg-primary rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/40 border-[4px] border-[#F8FAFC] transition-transform hover:scale-105 active:scale-95">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </a>
         </div>
+
+      <a href="{{ route('saved-kos') }}" class="flex flex-col items-center gap-1 group w-16 transition-all {{ request()->routeIs('saved-kos') ? '' : 'opacity-50 hover:opacity-100' }}">
+    <svg class="w-6 h-6 {{ request()->routeIs('saved-kos') ? 'text-primary fill-primary/20' : 'text-slate-600' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+    </svg>
+    <span class="text-[9px] font-bold {{ request()->routeIs('saved-kos') ? 'text-primary' : 'text-slate-500' }}">Simpan</span>
+</a>
+
+<a href="{{ route('help') }}" class="flex flex-col items-center gap-1 group w-16 transition-all {{ request()->routeIs('help') ? '' : 'opacity-50 hover:opacity-100' }}">
+    <svg class="w-6 h-6 {{ request()->routeIs('help') ? 'text-primary fill-primary/20' : 'text-slate-600' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
+    </svg>
+    <span class="text-[9px] font-bold {{ request()->routeIs('help') ? 'text-primary' : 'text-slate-500' }}">Bantuan</span>
+</a>
+
     </nav>
 </div>

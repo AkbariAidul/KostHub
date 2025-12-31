@@ -1,77 +1,61 @@
- @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
-    <div id="Background"
-            class="absolute top-0 w-full h-[230px] rounded-b-[75px] bg-[linear-gradient(180deg,#F2F9E6_0%,#D2EDE4_100%)]">
-        </div>
-        <div id="TopNav" class="relative flex items-center justify-between px-5 mt-[60px]">
-            <a href="{{ route('kos.show', $boardingHouse->slug) }}"
-                class="w-12 h-12 flex items-center justify-center shrink-0 rounded-full overflow-hidden bg-white">
-                <img src="{{ asset('assets/images/icons/arrow-left.svg') }}" class="w-[28px] h-[28px]" alt="icon">
+    <div class="px-6 py-6 mt-4">
+        <div class="flex items-center gap-4 mb-8">
+            <a href="{{ url()->previous() }}" class="w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center shadow-sm text-slate-600 hover:text-slate-800 transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
             </a>
-            <p class="font-semibold">Choose Available Room</p>
-            <div class="dummy-btn w-12"></div>
+            <h1 class="font-bold text-lg text-slate-800">Pilih Tipe Kamar</h1>
         </div>
-        <div id="Header" class="relative flex items-center justify-between gap-2 px-5 mt-[18px]">
-            <div class="flex w-full rounded-[30px] border border-[#F1F2F6] p-4 gap-4 bg-white">
-                <div class="flex w-[120px] h-[132px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                    <img src="{{ asset('storage/' . $boardingHouse->thumbnail) }}" class="w-full h-full object-cover" alt="icon">
-                </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <h1 class="font-semibold text-lg leading-[27px] line-clamp-2 min-h-[54px]">
-                        {{ $boardingHouse->name }}
-                    </h1>
-                    <hr class="border-[#F1F2F6]">
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/location.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">Kota {{ $boardingHouse->city->name }}</p>
-                    </div>
-                    <div class="flex items-center gap-[6px]">
-                        <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                        <p class="text-sm text-ngekos-grey">In {{ $boardingHouse->category->name }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <form action="{{ route('booking', $boardingHouse->slug) }}" class="relative flex flex-col gap-4 mt-5">
+
+        <form action="{{ route('booking', $boardingHouse->slug) }}" class="flex flex-col gap-4 pb-32">
             <input type="hidden" name="boarding_house_id" value="{{$boardingHouse->id}}">
-            <h2 class="font-bold px-5">Available Rooms</h2>
-            <div id="RoomsContainer" class="flex flex-col gap-4 px-5">
-                @foreach ($boardingHouse->rooms as $room)
-                <label class="relative group">
-                    <input type="radio" name="room_id" class="absolute top-1/2 left-1/2 -z-10 opacity-0" value="{{ $room->id }}"  required>
-                    <div
-                        class="flex rounded-[30px] border border-[#F1F2F6] p-4 gap-4 bg-white hover:border-[#91BF77] group-has-[:checked]:ring-2 group-has-[:checked]:ring-[#91BF77] transition-all duration-300">
-                        <div class="flex w-[120px] h-[156px] shrink-0 rounded-[30px] bg-[#D9D9D9] overflow-hidden">
-                            <img src="{{ asset('storage/' . $room->images->first()->image) }}" class="w-full h-full object-cover"
-                                alt="icon">
-                        </div>
-                        <div class="flex flex-col gap-3 w-full">
-                            <h3 class="font-semibold text-lg leading-[27px]">{{ $room->name }}</h3>
-                            <hr class="border-[#F1F2F6]">
-                            <div class="flex items-center gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/profile-2user.svg') }}" class="w-5 h-5 flex shrink-0"
-                                    alt="icon">
-                                <p class="text-sm text-ngekos-grey">{{ $room->capacity }} People</p>
-                            </div>
-                            <div class="flex items-center gap-[6px]">
-                                <img src="{{ asset('assets/images/icons/3dcube.svg') }}" class="w-5 h-5 flex shrink-0" alt="icon">
-                                <p class="text-sm text-ngekos-grey">{{ $room->square_feet }} sqft flat</p>
-                            </div>
-                            <hr class="border-[#F1F2F6]">
-                            <p class="font-semibold text-lg text-ngekos-orange">Rp {{ number_format($room->price_per_month, 0, ',', '.' ) }}<span
-                                    class="text-sm text-ngekos-grey font-normal">/bulan</span></p>
-                        </div>
+            
+            @foreach ($boardingHouse->rooms as $room)
+            <label class="relative cursor-pointer group">
+                <input type="radio" name="room_id" value="{{ $room->id }}" class="peer sr-only" required>
+                
+                <div class="p-4 bg-white rounded-[24px] border border-slate-100 shadow-sm transition-all flex gap-4 
+                            peer-checked:border-[#4FA8C0] peer-checked:ring-1 peer-checked:ring-[#4FA8C0] peer-checked:bg-[#4FA8C0]/5
+                            peer-checked:[&_.indicator]:bg-[#4FA8C0] peer-checked:[&_.indicator]:border-[#4FA8C0] 
+                            peer-checked:[&_.indicator-dot]:block">
+                    
+                    <div class="w-24 h-24 bg-slate-100 rounded-xl overflow-hidden shrink-0">
+                        @if($room->images->isNotEmpty())
+                            <img src="{{ asset('storage/' . $room->images->first()->image) }}" class="w-full h-full object-cover">
+                        @else
+                            <img src="https://placehold.co/300x300?text=No+Image" class="w-full h-full object-cover opacity-50">
+                        @endif
                     </div>
-                </label>
-                @endforeach
-            </div>
-            <div id="BottomButton" class="relative flex w-full h-[98px] shrink-0">
-                <div class="fixed bottom-[30px] w-full max-w-[640px] px-5 z-10">
-                    <button
-                        class="w-full rounded-full p-[14px_20px] bg-ngekos-orange font-bold text-white text-center">Continue
-                        Booking</button>
+
+                    <div class="flex flex-col justify-center w-full">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-slate-800 text-base">{{ $room->name }}</h3>
+                            
+                            <div class="indicator w-5 h-5 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center transition-all">
+                                <div class="indicator-dot w-2.5 h-2.5 rounded-full bg-white hidden"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <span class="text-[10px] bg-slate-50 border border-slate-100 px-2 py-1 rounded-md text-slate-500 font-medium">{{ $room->square_feet }} sqft</span>
+                            <span class="text-[10px] bg-slate-50 border border-slate-100 px-2 py-1 rounded-md text-slate-500 font-medium">{{ $room->capacity }} Org</span>
+                        </div>
+
+                        <p class="font-extrabold text-[#4FA8C0] text-sm mt-2">
+                            Rp {{ number_format($room->price_per_month, 0, ',', '.') }}<span class="text-slate-400 font-normal text-[10px] ml-1">/bln</span>
+                        </p>
+                    </div>
                 </div>
+            </label>
+            @endforeach
+
+            <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-6 z-50">
+                <button type="submit" class="w-full bg-[#4FA8C0] text-white py-3.5 rounded-full font-bold text-base shadow-xl shadow-[#4FA8C0]/30 hover:bg-[#3d8b9f] hover:shadow-[#4FA8C0]/50 transition-all active:scale-95">
+                    Lanjut Booking
+                </button>
             </div>
         </form>
+    </div>
 @endsection
