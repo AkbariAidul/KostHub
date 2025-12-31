@@ -5,11 +5,13 @@
         <div class="flex items-center justify-between mb-6">
             <img src="{{ asset('assets/logos/logopng.png') }}" class="h-10 w-auto object-contain" alt="Logo">
             
-            <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-slate-100 relative hover:bg-slate-50 transition-colors">
+            <button onclick="toggleNotification()" class="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-slate-100 relative hover:bg-slate-50 transition-colors active:scale-95">
                 <svg class="w-6 h-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <span class="absolute top-2.5 right-3 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                @if($promoCodes->count() > 0)
+                    <span class="absolute top-2.5 right-3 w-2 h-2 bg-red-500 rounded-full border border-white animate-pulse"></span>
+                @endif
             </button>
         </div>
 
@@ -27,7 +29,6 @@
         <div class="mt-6 px-6">
             <h3 class="font-bold text-base text-slate-800 mb-3">Kategori</h3>
             <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
-                
                 <button onclick="filterByCategory('all')" class="category-btn flex flex-col items-center gap-2 min-w-[70px] group" data-slug="all">
                     <div class="w-[70px] h-[70px] rounded-[24px] bg-primary flex items-center justify-center shadow-lg shadow-primary/30 transition-all icon-box overflow-hidden">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2v-2z"/></svg>
@@ -112,9 +113,48 @@
         <div id="resultsContainer" class="flex flex-col gap-4"></div>
     </div>
 
-    @include('includes.navigation')
+    <div id="notificationModal" class="hidden fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleNotification()"></div>
+        
+        <div class="relative bg-white w-full max-w-[480px] rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl transform transition-transform translate-y-full sm:translate-y-0 duration-300" id="modalPanel">
+            <div class="flex justify-center mb-4">
+                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+            </div>
+            
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-slate-800">Info & Promo</h2>
+                <button onclick="toggleNotification()" class="p-2 bg-slate-50 rounded-full hover:bg-slate-100">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
 
-    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-xs font-bold opacity-0 transition-all z-50 pointer-events-none">Kode disalin!</div>
+            <div class="flex flex-col gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar">
+                @forelse($promoCodes as $promo)
+                <div class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white shadow-sm cursor-pointer hover:border-primary/50 transition-all" onclick="copyPromo('{{ $promo->code }}'); toggleNotification()">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-800 text-sm">{{ $promo->name }}</h4>
+                        <p class="text-xs text-slate-500 mt-1">Gunakan kode <span class="font-mono font-bold text-primary">{{ $promo->code }}</span> saat checkout.</p>
+                    </div>
+                    <div class="flex items-center">
+                         <span class="text-xs font-bold text-primary bg-primary/5 px-3 py-1 rounded-full">Salin</span>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center py-10">
+                    <p class="text-slate-400 text-sm">Belum ada promo atau info baru.</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    @include('includes.navigation')
+    
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-xs font-bold opacity-0 transition-all z-[60] pointer-events-none">Kode disalin!</div>
+
 @endsection
 
 @section('scripts')
@@ -123,6 +163,27 @@
         new Swiper('.swiper', { slidesPerView: 1, loop: true, autoplay: { delay: 3000 } });
     }
     
+    // Toggle Notification Modal
+    function toggleNotification() {
+        const modal = document.getElementById('notificationModal');
+        const panel = document.getElementById('modalPanel');
+        
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            // Animasi Slide Up
+            setTimeout(() => {
+                panel.classList.remove('translate-y-full');
+            }, 10);
+        } else {
+            // Animasi Slide Down
+            panel.classList.add('translate-y-full');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    // ... (Script Filter & Search tetap sama) ...
     let currentCategory = 'all';
     let timeout = null;
     const defaultView = document.getElementById('defaultView');
@@ -133,11 +194,9 @@
     
     function filterByCategory(slug) {
         currentCategory = slug;
-        
         document.querySelectorAll('.category-btn').forEach(btn => {
             const box = btn.querySelector('.icon-box');
             const txt = btn.querySelector('.label-text');
-            
             if(btn.dataset.slug === slug) {
                 box.classList.remove('bg-slate-100', 'border-slate-100');
                 box.classList.add('bg-white', 'border-primary', 'ring-2', 'ring-primary/20');
@@ -158,7 +217,6 @@
                 }
             }
         });
-
         fetchData(false); 
     }
 
@@ -186,16 +244,11 @@
         const keyword = searchInput.value;
         const targetContainer = isSearchMode ? resultsContainer : kosContainer;
         targetContainer.style.opacity = '0.5';
-
         fetch(`{{ route('kos.search') }}?keyword=${keyword}&category=${currentCategory}`)
             .then(res => res.json())
-            .then(data => {
-                targetContainer.innerHTML = data.html;
-            })
+            .then(data => { targetContainer.innerHTML = data.html; })
             .catch(err => console.error(err))
-            .finally(() => {
-                targetContainer.style.opacity = '1';
-            });
+            .finally(() => { targetContainer.style.opacity = '1'; });
     }
 
     function copyPromo(code) {
