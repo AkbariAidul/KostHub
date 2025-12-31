@@ -55,7 +55,8 @@ class TestimonialResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('photo')
-                    ->searchable(),
+                    ->searchable()
+                    ->rounded(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('content')
@@ -106,4 +107,9 @@ class TestimonialResource extends Resource
             'edit' => Pages\EditTestimonial::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 }

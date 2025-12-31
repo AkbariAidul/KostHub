@@ -138,4 +138,24 @@ class TransactionResource extends Resource
             'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+{
+    // Menghitung transaksi yang statusnya 'pending'
+    return static::getModel()::where('payment_status', 'pending')->count();
+}
+
+// Logika Warna Badge:
+// Jika ada pending > 0, warnanya Merah (Danger) biar Admin notice.
+// Jika 0 (bersih), warnanya Abu-abu atau disembunyikan.
+public static function getNavigationBadgeColor(): ?string
+{
+    return static::getModel()::where('payment_status', 'pending')->count() > 0 ? 'danger' : 'gray';
+}
+
+// Opsional: Menambahkan Tooltip saat dihover
+public static function getNavigationBadgeTooltip(): ?string
+{
+    return 'Jumlah Transaksi Pending';
+}
 }

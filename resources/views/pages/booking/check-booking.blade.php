@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <div class="px-6 -mt-10 pb-10"> 
+    <div class="px-6 -mt-0 pb-32"> 
         <form action="{{ route('check-booking.show') }}" method="POST" class="bg-white rounded-[32px] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 flex flex-col gap-5">
             @csrf
             

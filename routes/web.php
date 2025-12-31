@@ -28,5 +28,13 @@ Route::get('/booking-succes', [BookingController::class, 'succes'])->name('booki
 Route::get('/find-kos', [BoardingHouseController::class, 'find'])->name('find-kos');
 Route::get('/find-results', [BoardingHouseController::class, 'findResults'])->name('find-kos.results');
 
+Route::get('/search-kos', [HomeController::class, 'search'])->name('kos.search');
+
 Route::get('/check-booking', [BookingController::class, 'check'])->name('check-booking');
 Route::post('/check-booking', [BookingController::class, 'show'])->name('check-booking.show');
+
+Route::get('/saved', [App\Http\Controllers\BoardingHouseController::class, 'saved'])->name('saved-kos');
+Route::get('/help', [App\Http\Controllers\HomeController::class, 'help'])->name('help');
+
+// API untuk mengambil data kos berdasarkan list slug yang disimpan di browser
+Route::get('/api/kos/saved-details', [App\Http\Controllers\BoardingHouseController::class, 'getSavedKos'])->name('api.kos.saved');

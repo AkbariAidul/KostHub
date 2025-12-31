@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\BoardingHouseRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\CityRepositoryInterface;
+use App\Models\BoardingHouse;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -51,5 +52,37 @@ class BoardingHouseController extends Controller
         $boardingHouses = $this->boardingHouseRepository->getAllBoardingHouses($request->search, $request->city, $request->category);
 
         return view('pages.boarding-house.index', compact('boardingHouses'));
+    }
+
+    public function saved()
+    {
+        return view('pages.boarding-house.saved');
+    }
+
+    /**
+     * API untuk mengambil data kos yang tersimpan di localStorage
+     */
+    public function getSavedKos(Request $request)
+    {
+        // Slug dikirim sebagai string dipisah koma, misal: "kos-a,kos-b"
+        $slugs = $request->input('slugs');
+        
+        if (empty($slugs)) {
+            return response()->json(['html' => '']);
+        }
+
+        $slugArray = explode(',', $slugs);
+        
+        // Ambil data kos berdasarkan slug
+        $houses = BoardingHouse::whereIn('slug', $slugArray)->get();
+        
+        if ($houses->isEmpty()) {
+            return response()->json(['html' => '']);
+        }
+
+        // Render partial view
+        $html = view('partials.kos_list', ['houses' => $houses])->render();
+
+        return response()->json(['html' => $html]);
     }
 }

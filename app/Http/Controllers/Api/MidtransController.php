@@ -27,6 +27,7 @@ class MidtransController extends Controller
             return response()->json(['message' => 'Transaction not found'], 404);
         }
 
+        // [CATATAN] Pastikan kolom 'payment_status' di DB kamu support value di bawah ini
         switch($transactionStatus)
         {
             case 'capture':
@@ -36,29 +37,29 @@ class MidtransController extends Controller
                     {
                         $transaction->update(['payment_status' => 'pending']);
                     } else {
-                        $transaction->update(['payment_status' => 'succes']);
+                        $transaction->update(['payment_status' => 'success']); // Typo fix: succes -> success
                     }
                 }
                 break;
 
-                case 'settlement':
-                    $transaction->update(['payment_status' => 'succes']);
-                    break;
-                case 'pending':
-                    $transaction->update(['payment_status' => 'pending']);
-                    break;
-                case 'deny':
-                    $transaction->update(['payment_status' => 'failed']);
-                    break;
-                case 'expire':
-                    $transaction->update(['payment_status' => 'expired']);
-                    break;
-                case 'cancel':
-                    $transaction->update(['payment_status' => 'canceld']);
-                    break;
-                default:
-                    $transaction->update(['payment_status' => 'unknown']);
-                    break;
+            case 'settlement':
+                $transaction->update(['payment_status' => 'success']); // Typo fix: succes -> success
+                break;
+            case 'pending':
+                $transaction->update(['payment_status' => 'pending']);
+                break;
+            case 'deny':
+                $transaction->update(['payment_status' => 'failed']);
+                break;
+            case 'expire':
+                $transaction->update(['payment_status' => 'expired']);
+                break;
+            case 'cancel':
+                $transaction->update(['payment_status' => 'cancelled']);
+                break;
+            default:
+                $transaction->update(['payment_status' => 'unknown']);
+                break;
         }
 
         return response()->json(['message' => 'Callback received succesfully']);

@@ -37,7 +37,7 @@
 
                 @foreach ($categories as $category)
                 <button onclick="filterByCategory('{{ $category->slug }}')" class="category-btn flex flex-col items-center gap-2 min-w-[70px] group" data-slug="{{ $category->slug }}">
-                    <div class="w-[70px] h-[70px] rounded-[24px] bg-slate-100 border border-slate-100 shadow-sm transition-all icon-box group-hover:border-primary/50 overflow-hidden relative">
+                    <div class="w-[70px] h-[70px] rounded-[24px] bg-slate-100 border border-slate-100 flex items-center justify-center shadow-sm transition-all icon-box group-hover:border-primary/50 overflow-hidden relative">
                         <img src="{{ Storage::url($category->image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                     </div>
                     <span class="text-[11px] font-medium text-slate-500 label-text group-hover:text-primary transition-colors truncate w-full text-center">{{ $category->name }}</span>
@@ -69,7 +69,29 @@
         </div>
         @endif
 
-        <div class="mt-8 px-6 pb-4">
+        <div class="mt-8 px-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-800">Jelajahi Kota</h3>
+            </div>
+            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-4 snap-x">
+                @foreach ($cities as $city)
+                <a href="{{ route('city.show', $city->slug) }}" class="relative w-[120px] h-[150px] shrink-0 rounded-[24px] overflow-hidden group shadow-md snap-start transition-transform hover:scale-105">
+                    @if($city->image)
+                        <img src="{{ Storage::url($city->image) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ $city->name }}">
+                    @else
+                        <div class="w-full h-full bg-slate-200 flex items-center justify-center"><span class="text-xs text-slate-400">No Image</span></div>
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-4 text-center">
+                        <p class="text-white font-bold text-sm leading-tight drop-shadow-md">{{ $city->name }}</p>
+                        <div class="w-6 h-1 bg-[#4FA8C0] rounded-full mx-auto mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"></div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="mt-4 px-6 pb-4">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="font-bold text-base text-slate-800" id="listTitle">Rekomendasi Pilihan</h3>
             </div>
@@ -112,7 +134,6 @@
     function filterByCategory(slug) {
         currentCategory = slug;
         
-        // Update Visual Tombol
         document.querySelectorAll('.category-btn').forEach(btn => {
             const box = btn.querySelector('.icon-box');
             const txt = btn.querySelector('.label-text');
@@ -122,7 +143,7 @@
                 box.classList.add('bg-white', 'border-primary', 'ring-2', 'ring-primary/20');
                 txt.classList.add('text-slate-800', 'font-bold');
                 txt.classList.remove('text-slate-500');
-                if(slug === 'all') { // Khusus tombol Semua
+                if(slug === 'all') {
                      box.classList.remove('bg-white');
                      box.classList.add('bg-primary');
                 }
@@ -133,12 +154,11 @@
                 txt.classList.add('text-slate-500');
                 if(slug === 'all') { 
                      box.classList.remove('bg-primary');
-                     box.classList.add('bg-primary'); // Kembalikan warna asli tapi tanpa ring
+                     box.classList.add('bg-primary');
                 }
             }
         });
 
-        // Fetch Data untuk list rekomendasi
         fetchData(false); 
     }
 
@@ -149,7 +169,7 @@
             if(keyword.length > 0) {
                 defaultView.classList.add('hidden');
                 searchView.classList.remove('hidden');
-                fetchData(true); // Fetch untuk search view
+                fetchData(true);
             } else {
                 clearSearch();
             }
@@ -165,7 +185,6 @@
     function fetchData(isSearchMode) {
         const keyword = searchInput.value;
         const targetContainer = isSearchMode ? resultsContainer : kosContainer;
-        
         targetContainer.style.opacity = '0.5';
 
         fetch(`{{ route('kos.search') }}?keyword=${keyword}&category=${currentCategory}`)

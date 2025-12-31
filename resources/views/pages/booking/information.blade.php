@@ -79,17 +79,18 @@
             </div>
         </div>
 
-        <div class="fixed bottom-6 left-0 right-0 px-6 z-50">
-            <div class="bg-[#1E293B] rounded-[28px] p-4 pl-6 flex items-center justify-between shadow-2xl">
-                <div class="flex flex-col">
-                    <span class="text-xs text-slate-400 font-medium">Total Sementara</span>
-                    <span class="font-bold text-white text-lg" id="priceDisplay">Rp {{ number_format($room->price_per_month, 0, ',', '.') }}</span>
-                </div>
-                <button type="submit" class="bg-[#4FA8C0] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#3d8b9f] transition-all shadow-lg shadow-[#4FA8C0]/20">
-                    Lanjut Bayar
-                </button>
-            </div>
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-6 z-50">
+    <div class="bg-[#1E293B] rounded-full p-1.5 pl-6 flex items-center justify-between shadow-2xl shadow-slate-900/30 border border-slate-800">
+        <div class="flex flex-col justify-center">
+            <span class="text-[10px] text-slate-400 font-medium uppercase tracking-wide">Total Sementara</span>
+            <span class="font-bold text-white text-lg" id="priceDisplay">Rp {{ number_format($room->price_per_month, 0, ',', '.') }}</span>
         </div>
+        <button type="submit" class="bg-[#4FA8C0] hover:bg-[#3d8b9f] text-white px-6 py-3 rounded-full font-bold text-sm transition-all shadow-lg shadow-[#4FA8C0]/20 active:scale-95 flex items-center gap-2">
+            Lanjut Bayar
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        </button>
+    </div>
+</div>
     </form>
 @endsection
 

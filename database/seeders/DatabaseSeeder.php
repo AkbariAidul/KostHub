@@ -19,5 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        $this->call([
+            CitySeeder::class,
+            CategorySeeder::class,
+            BoardingHouseSeeder::class, // Pastikan ini dipanggil SETELAH City & Category
+        ]);
     }
 }
