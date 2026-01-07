@@ -31,7 +31,7 @@
             <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
                 <button onclick="filterByCategory('all')" class="category-btn flex flex-col items-center gap-2 min-w-[70px] group" data-slug="all">
                     <div class="w-[70px] h-[70px] rounded-[24px] bg-primary flex items-center justify-center shadow-lg shadow-primary/30 transition-all icon-box overflow-hidden">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2v-2z"/></svg>
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H16a2 2 0 01-2-2v-2z"/></svg>
                     </div>
                     <span class="text-[11px] font-bold text-slate-800 label-text">Semua</span>
                 </button>
@@ -85,7 +85,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-4 text-center">
                         <p class="text-white font-bold text-sm leading-tight drop-shadow-md">{{ $city->name }}</p>
-                        <div class="w-6 h-1 bg-[#4FA8C0] rounded-full mx-auto mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"></div>
+                        <div class="w-6 h-1 bg-primary rounded-full mx-auto mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"></div>
                     </div>
                 </a>
                 @endforeach
@@ -113,77 +113,98 @@
         <div id="resultsContainer" class="flex flex-col gap-4"></div>
     </div>
 
-    <div id="notificationModal" class="hidden fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleNotification()"></div>
-        
-        <div class="relative bg-white w-full max-w-[480px] rounded-t-[32px] sm:rounded-[32px] p-6 shadow-2xl transform transition-transform translate-y-full sm:translate-y-0 duration-300" id="modalPanel">
-            <div class="flex justify-center mb-4">
-                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
-            </div>
-            
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-slate-800">Info & Promo</h2>
-                <button onclick="toggleNotification()" class="p-2 bg-slate-50 rounded-full hover:bg-slate-100">
-                    <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-            </div>
+    <div id="notifBackdrop" 
+         onclick="toggleNotification()" 
+         class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden transition-opacity duration-300 opacity-0">
+    </div>
 
-            <div class="flex flex-col gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar">
-                @forelse($promoCodes as $promo)
-                <div class="flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white shadow-sm cursor-pointer hover:border-primary/50 transition-all" onclick="copyPromo('{{ $promo->code }}'); toggleNotification()">
-                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
-                    </div>
-                    <div class="flex-1">
-                        <h4 class="font-bold text-slate-800 text-sm">{{ $promo->name }}</h4>
-                        <p class="text-xs text-slate-500 mt-1">Gunakan kode <span class="font-mono font-bold text-primary">{{ $promo->code }}</span> saat checkout.</p>
-                    </div>
-                    <div class="flex items-center">
-                         <span class="text-xs font-bold text-primary bg-primary/5 px-3 py-1 rounded-full">Salin</span>
-                    </div>
-                </div>
-                @empty
-                <div class="text-center py-10">
-                    <p class="text-slate-400 text-sm">Belum ada promo atau info baru.</p>
-                </div>
-                @endforelse
+    <div id="notifPanel" 
+         class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] bg-white rounded-t-[32px] z-[70] transform translate-y-full transition-transform duration-300 ease-out shadow-[0_-10px_40px_rgba(0,0,0,0.1)] overflow-hidden">
+        
+        <div class="w-full flex justify-center pt-3 pb-1" onclick="toggleNotification()">
+            <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+        </div>
+
+        <div class="px-6 pb-4 border-b border-slate-50 flex justify-between items-center">
+            <div>
+                <h2 class="font-bold text-xl text-slate-800">Info & Promo</h2>
+                <p class="text-xs text-slate-400">Penawaran spesial hari ini untukmu.</p>
             </div>
+            <button onclick="toggleNotification()" class="p-2 bg-slate-50 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <div class="p-6 flex flex-col gap-4 max-h-[60vh] overflow-y-auto hide-scrollbar pb-10">
+            @forelse($promoCodes as $promo)
+            <div class="group flex gap-4 p-4 rounded-2xl border border-slate-100 bg-white shadow-sm hover:border-primary hover:shadow-md transition-all cursor-pointer relative overflow-hidden" 
+                 onclick="copyPromo('{{ $promo->code }}'); toggleNotification()">
+                
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary group-hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                </div>
+
+                <div class="flex-1">
+                    <h4 class="font-bold text-slate-800 text-sm group-hover:text-primary transition-colors">{{ $promo->name }}</h4>
+                    <div class="flex items-center gap-2 mt-1">
+                        <div class="bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 group-hover:bg-primary/10 group-hover:border-primary/20">
+                            <span class="text-[10px] font-mono font-bold text-slate-600 group-hover:text-primary">{{ $promo->code }}</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400">Ketuk untuk salin</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-center text-slate-300 group-hover:text-primary">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                </div>
+            </div>
+            @empty
+            <div class="flex flex-col items-center justify-center py-8 text-center">
+                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
+                    <svg class="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                </div>
+                <p class="text-slate-500 font-medium text-sm">Belum ada promo saat ini.</p>
+            </div>
+            @endforelse
         </div>
     </div>
 
     @include('includes.navigation')
     
-    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-xs font-bold opacity-0 transition-all z-[60] pointer-events-none">Kode disalin!</div>
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded-full text-xs font-bold opacity-0 transition-all z-[80] pointer-events-none">Kode disalin!</div>
 
 @endsection
 
 @section('scripts')
 <script>
+    // Init Swiper
     if (document.querySelector('.swiper')) {
         new Swiper('.swiper', { slidesPerView: 1, loop: true, autoplay: { delay: 3000 } });
     }
     
-    // Toggle Notification Modal
+    // --- Logic Modal Notifikasi (Slide Up) ---
     function toggleNotification() {
-        const modal = document.getElementById('notificationModal');
-        const panel = document.getElementById('modalPanel');
+        const backdrop = document.getElementById('notifBackdrop');
+        const panel = document.getElementById('notifPanel');
         
-        if (modal.classList.contains('hidden')) {
-            modal.classList.remove('hidden');
-            // Animasi Slide Up
+        const isHidden = backdrop.classList.contains('hidden');
+
+        if (isHidden) {
+            backdrop.classList.remove('hidden');
             setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
                 panel.classList.remove('translate-y-full');
             }, 10);
         } else {
-            // Animasi Slide Down
+            backdrop.classList.add('opacity-0');
             panel.classList.add('translate-y-full');
             setTimeout(() => {
-                modal.classList.add('hidden');
+                backdrop.classList.add('hidden');
             }, 300);
         }
     }
 
-    // ... (Script Filter & Search tetap sama) ...
+    // --- Filter & Search Logic ---
     let currentCategory = 'all';
     let timeout = null;
     const defaultView = document.getElementById('defaultView');

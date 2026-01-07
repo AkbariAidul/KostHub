@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="px-6 mt-10 mb-6 flex items-center justify-between">
-        <a href="{{ route('find-kos') }}" class="w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center shadow-sm hover:bg-slate-50">
+        <a href="{{ route('home') }}" class="w-10 h-10 bg-white border border-slate-100 rounded-full flex items-center justify-center shadow-sm hover:bg-slate-50">
             <svg class="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
         </a>
         <h1 class="font-bold text-lg text-slate-800">Hasil Pencarian</h1>
