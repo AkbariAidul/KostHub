@@ -5,6 +5,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WhatsAppController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,8 +34,13 @@ Route::get('/search-kos', [HomeController::class, 'search'])->name('kos.search')
 Route::get('/check-booking', [BookingController::class, 'check'])->name('check-booking');
 Route::post('/check-booking', [BookingController::class, 'show'])->name('check-booking.show');
 
+
 Route::get('/saved', [App\Http\Controllers\BoardingHouseController::class, 'saved'])->name('saved-kos');
 Route::get('/help', [App\Http\Controllers\HomeController::class, 'help'])->name('help');
 
 // API untuk mengambil data kos berdasarkan list slug yang disimpan di browser
 Route::get('/api/kos/saved-details', [App\Http\Controllers\BoardingHouseController::class, 'getSavedKos'])->name('api.kos.saved');
+
+Route::get('/send-wa', [\App\Http\Controllers\TwilioController::class, 'send']);
+
+Route::get('/test-wa', [WhatsAppController::class, 'test']);

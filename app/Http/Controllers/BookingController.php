@@ -91,7 +91,7 @@ public function payment(Request $request)
     // [STEP KRUSIAL] UPDATE KODE TRANSAKSI AGAR UNIK
     // ============================================================
     // Kita timpa kode yang dibuat repository supaya Midtrans menganggap ini transaksi baru
-    $newCode = 'TRX-' . mt_rand(10000, 99999) . '-' . time();
+    $newCode = 'KSTHB-' . mt_rand(10000, 99999) . '-' . time();
     $transaction->code = $newCode;
     $transaction->save(); // Simpan kode baru ini ke database
     // ============================================================
